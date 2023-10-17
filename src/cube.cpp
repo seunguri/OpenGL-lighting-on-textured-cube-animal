@@ -9,6 +9,8 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtx/transform.hpp"
+#include <math.h>
+#include <iostream>
 
 glm::mat4 projectMat;
 glm::mat4 viewMat;
@@ -38,6 +40,7 @@ point4 vertices[8] = {
 };
 
 // RGBA colors
+
 color4 vertex_colors[8] = {
 	color4(0.0, 0.0, 0.0, 1.0),  // black
 	color4(0.0, 1.0, 1.0, 1.0),   // cyan
@@ -139,9 +142,8 @@ void drawHorse(glm::mat4 horseMat)
 	legPos[2] = glm::vec3(-0.4, -0.4, -0.1); // front right uppper
 	legPos[3] = glm::vec3(-0.4, -0.4, 0.1); // front left uppper
 
-	earPos[0] = glm::vec3(-0.8, 0.5, 0.1); // left
 	earPos[1] = glm::vec3(-0.8, 0.5, -0.1); // right
-
+	earPos[0] = glm::vec3(-0.8, 0.5, 0.1); // left
 
 	// horse body
 	modelMat = glm::scale(horseMat, glm::vec3(1, 0.5, 0.4));
@@ -190,7 +192,7 @@ void drawHorse(glm::mat4 horseMat)
 		// upper
 		modelMat = glm::translate(horseMat, legPos[i]);  //P*V*C*T*S*v
 		modelMat = glm::scale(modelMat, glm::vec3(0.15, 0.3, 0.15));
-		//modelMat = glm::rotate(modelMat, -rotAngle*50.0f, glm::vec3(0, 1, 0));
+		modelMat = glm::rotate(modelMat, rotAngle, glm::vec3(0, 0, 1));
 		pvmMat = projectMat * viewMat * modelMat;
 		glUniformMatrix4fv(pvmMatrixID, 1, GL_FALSE, &pvmMat[0][0]);
 		glDrawArrays(GL_TRIANGLES, 0, NumVertices);
@@ -198,7 +200,7 @@ void drawHorse(glm::mat4 horseMat)
 		// lower
 		modelMat = glm::translate(horseMat, legPos[i] + lowerlegPos);  //P*V*C*T*S*v
 		modelMat = glm::scale(modelMat, glm::vec3(0.15, 0.2, 0.15));
-		//modelMat = glm::rotate(modelMat, -rotAngle*50.0f, glm::vec3(0, 1, 0));
+		modelMat = glm::rotate(modelMat, -rotAngle, glm::vec3(0, 0, 1));
 		pvmMat = projectMat * viewMat * modelMat;
 		glUniformMatrix4fv(pvmMatrixID, 1, GL_FALSE, &pvmMat[0][0]);
 		glDrawArrays(GL_TRIANGLES, 0, NumVertices);
@@ -211,7 +213,7 @@ void display(void)
 	glm::mat4 worldMat, pvmMat;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	worldMat = glm::rotate(glm::mat4(1.0f), rotAngle, glm::vec3(0.5f, 1.0f, 0.0f));
+	worldMat = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 0.0f));
 	//worldMat = glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 1.0f, 0.0f));
 
 	drawHorse(worldMat);
@@ -229,7 +231,7 @@ void idle()
 	if (abs(currTime - prevTime) >= 20)
 	{
 		float t = abs(currTime - prevTime);
-		rotAngle += glm::radians(t*360.0f / 10000.0f);
+		rotAngle = glm::radians(45.0f) * sin(glm::radians(currTime * 90.0f / 1000.0f));
 		prevTime = currTime;
 		glutPostRedisplay();
 	}
