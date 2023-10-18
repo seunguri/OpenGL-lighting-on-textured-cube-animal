@@ -135,7 +135,7 @@ void drawHorse(glm::mat4 horseMat)
 {
 	glm::mat4 modelMat, pvmMat;
 	glm::vec3 legPos[4];
-	glm::vec3 lowerlegPos = glm::vec3(0, -0.25, 0);
+	glm::vec3 lowerlegPos = glm::vec3(0, -0.5, 0);
 	glm::vec3 earPos[2];
 
 	legPos[0] = glm::vec3(0.4, -0.4, -0.1); // rear right uppper
@@ -205,7 +205,7 @@ void drawHorse(glm::mat4 horseMat)
 		// lower
 		modelMat = glm::translate(horseMat, legPos[i] + glm::vec3(0, 0.2, 0));
 		modelMat = glm::rotate(modelMat, dir * upperLegAngle, glm::vec3(0, 0, 1));
-		modelMat = glm::translate(modelMat, glm::vec3(0, -0.2, 0) + lowerlegPos);
+		modelMat = glm::translate(modelMat, lowerlegPos + glm::vec3(0, 0.05, 0));
 		modelMat = glm::rotate(modelMat, -dir * lowerLegAngle, glm::vec3(0, 0, 1));
 		modelMat = glm::translate(modelMat, glm::vec3(0, -0.05, 0));
 		modelMat = glm::scale(modelMat, glm::vec3(0.15, 0.25, 0.15));
@@ -239,7 +239,6 @@ void idle()
 
 	if (abs(currTime - prevTime) >= 20)
 	{
-		float t = abs(currTime - prevTime);
 		upperLegAngle = glm::radians(30.0f) * sin(glm::radians(currTime * 360.0f / 1000.0f));
 		lowerLegAngle = glm::radians(30.0f) * sin(glm::radians(currTime * 360.0f / 990.0f));
 		prevTime = currTime;
