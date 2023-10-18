@@ -241,7 +241,7 @@ void idle()
 	{
 		float t = abs(currTime - prevTime);
 		upperLegAngle = glm::radians(30.0f) * sin(glm::radians(currTime * 360.0f / 1000.0f));
-		lowerLegAngle = glm::radians(50.0f) * sin(glm::radians(currTime * 360.0f / 990.0f));
+		lowerLegAngle = glm::radians(30.0f) * sin(glm::radians(currTime * 360.0f / 990.0f));
 		prevTime = currTime;
 		glutPostRedisplay();
 	}
