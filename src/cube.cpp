@@ -152,7 +152,7 @@ void drawHorse(glm::mat4 horseMat)
 	glDrawArrays(GL_TRIANGLES, 0, NumVertices);
 
 	// horse neck
-	modelMat = glm::translate(horseMat, glm::vec3(-0.6, 0.3, 0));  //P*V*C*T*S*v
+	modelMat = glm::translate(horseMat, glm::vec3(-0.6, 0.3, 0));
 	modelMat = glm::rotate(modelMat, glm::radians(45.0f), glm::vec3(0, 0, 1.0f));
 	modelMat = glm::scale(modelMat, glm::vec3(0.3, 0.5, 0.3));
 	pvmMat = projectMat * viewMat * modelMat;
@@ -160,7 +160,7 @@ void drawHorse(glm::mat4 horseMat)
 	glDrawArrays(GL_TRIANGLES, 0, NumVertices);
 
 	// horse head
-	modelMat = glm::translate(horseMat, glm::vec3(-0.77, 0.3, 0));  //P*V*C*T*S*v
+	modelMat = glm::translate(horseMat, glm::vec3(-0.77, 0.3, 0));
 	modelMat = glm::rotate(modelMat, glm::radians(-45.0f), glm::vec3(0, 0, 1.0f));
 	modelMat = glm::scale(modelMat, glm::vec3(0.25, 0.45, 0.29));
 	pvmMat = projectMat * viewMat * modelMat;
@@ -170,7 +170,7 @@ void drawHorse(glm::mat4 horseMat)
 	// horse ear
 	for (int i = 0; i < 2; i++)
 	{
-		modelMat = glm::translate(horseMat, earPos[i]);  //P*V*C*T*S*v
+		modelMat = glm::translate(horseMat, earPos[i]);
 		modelMat = glm::scale(modelMat, glm::vec3(0.05, 0.2, 0.05));
 		//modelMat = glm::rotate(modelMat, glm::radians(15.0f), glm::vec3(1.0f, 0, 0));
 		pvmMat = projectMat * viewMat * modelMat;
@@ -189,18 +189,25 @@ void drawHorse(glm::mat4 horseMat)
 	// horse leg
 	for (int i = 0; i < 4; i++)
 	{
+		float dir = 1.0f;
+		if (i % 2 != 0)
+			dir = -1.0f;
 		// upper
-		modelMat = glm::translate(horseMat, legPos[i]);  //P*V*C*T*S*v
-		modelMat = glm::scale(modelMat, glm::vec3(0.15, 0.3, 0.15));
-		modelMat = glm::rotate(modelMat, rotAngle, glm::vec3(0, 0, 1));
+		modelMat = glm::translate(horseMat, legPos[i] + glm::vec3(0, 0.2, 0));
+		modelMat = glm::rotate(modelMat, dir * rotAngle, glm::vec3(0, 0, 1));
+		modelMat = glm::translate(modelMat, glm::vec3(0, -0.2, 0));
+		modelMat = glm::scale(modelMat, glm::vec3(0.15, 0.4, 0.15));
+
+		//modelMat = glm::translate(horseMat, glm::vec3(0, -0.2, 0));
+
 		pvmMat = projectMat * viewMat * modelMat;
 		glUniformMatrix4fv(pvmMatrixID, 1, GL_FALSE, &pvmMat[0][0]);
 		glDrawArrays(GL_TRIANGLES, 0, NumVertices);
 
 		// lower
-		modelMat = glm::translate(horseMat, legPos[i] + lowerlegPos);  //P*V*C*T*S*v
+		modelMat = glm::translate(horseMat, legPos[i] + lowerlegPos);
 		modelMat = glm::scale(modelMat, glm::vec3(0.15, 0.2, 0.15));
-		modelMat = glm::rotate(modelMat, -rotAngle, glm::vec3(0, 0, 1));
+		modelMat = glm::rotate(modelMat, dir * -rotAngle, glm::vec3(0, 0, 1));
 		pvmMat = projectMat * viewMat * modelMat;
 		glUniformMatrix4fv(pvmMatrixID, 1, GL_FALSE, &pvmMat[0][0]);
 		glDrawArrays(GL_TRIANGLES, 0, NumVertices);
@@ -231,7 +238,7 @@ void idle()
 	if (abs(currTime - prevTime) >= 20)
 	{
 		float t = abs(currTime - prevTime);
-		rotAngle = glm::radians(45.0f) * sin(glm::radians(currTime * 90.0f / 1000.0f));
+		rotAngle = glm::radians(30.0f) * sin(glm::radians(currTime * 360.0f / 1000.0f));
 		prevTime = currTime;
 		glutPostRedisplay();
 	}
