@@ -17,7 +17,8 @@ glm::mat4 viewMat;
 
 GLuint pvmMatrixID;
 
-float rotAngle = 0.0f;
+float upperLegAngle = 0.0f;
+float lowerLegAngle = 0.0f;
 
 typedef glm::vec4  color4;
 typedef glm::vec4  point4;
@@ -194,20 +195,21 @@ void drawHorse(glm::mat4 horseMat)
 			dir = -1.0f;
 		// upper
 		modelMat = glm::translate(horseMat, legPos[i] + glm::vec3(0, 0.2, 0));
-		modelMat = glm::rotate(modelMat, dir * rotAngle, glm::vec3(0, 0, 1));
+		modelMat = glm::rotate(modelMat, dir * upperLegAngle, glm::vec3(0, 0, 1));
 		modelMat = glm::translate(modelMat, glm::vec3(0, -0.2, 0));
-		modelMat = glm::scale(modelMat, glm::vec3(0.15, 0.4, 0.15));
-
-		//modelMat = glm::translate(horseMat, glm::vec3(0, -0.2, 0));
-
+		modelMat = glm::scale(modelMat, glm::vec3(0.15, 0.35, 0.15));
 		pvmMat = projectMat * viewMat * modelMat;
 		glUniformMatrix4fv(pvmMatrixID, 1, GL_FALSE, &pvmMat[0][0]);
 		glDrawArrays(GL_TRIANGLES, 0, NumVertices);
 
 		// lower
-		modelMat = glm::translate(horseMat, legPos[i] + lowerlegPos);
-		modelMat = glm::scale(modelMat, glm::vec3(0.15, 0.2, 0.15));
-		modelMat = glm::rotate(modelMat, dir * -rotAngle, glm::vec3(0, 0, 1));
+		modelMat = glm::translate(horseMat, legPos[i] + glm::vec3(0, 0.2, 0));
+		modelMat = glm::rotate(modelMat, dir * upperLegAngle, glm::vec3(0, 0, 1));
+		modelMat = glm::translate(modelMat, glm::vec3(0, -0.2, 0) + lowerlegPos);
+		modelMat = glm::rotate(modelMat, -dir * lowerLegAngle, glm::vec3(0, 0, 1));
+		modelMat = glm::translate(modelMat, glm::vec3(0, -0.05, 0));
+		modelMat = glm::scale(modelMat, glm::vec3(0.15, 0.25, 0.15));
+
 		pvmMat = projectMat * viewMat * modelMat;
 		glUniformMatrix4fv(pvmMatrixID, 1, GL_FALSE, &pvmMat[0][0]);
 		glDrawArrays(GL_TRIANGLES, 0, NumVertices);
@@ -238,7 +240,8 @@ void idle()
 	if (abs(currTime - prevTime) >= 20)
 	{
 		float t = abs(currTime - prevTime);
-		rotAngle = glm::radians(30.0f) * sin(glm::radians(currTime * 360.0f / 1000.0f));
+		upperLegAngle = glm::radians(30.0f) * sin(glm::radians(currTime * 360.0f / 1000.0f));
+		lowerLegAngle = glm::radians(50.0f) * sin(glm::radians(currTime * 360.0f / 990.0f));
 		prevTime = currTime;
 		glutPostRedisplay();
 	}
