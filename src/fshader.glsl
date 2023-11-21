@@ -5,11 +5,14 @@ const int NO_LIGHT = 0, GOURAUD = 1, PHONG = 2;
 in vec4 fragPos;
 in vec4 color;
 in vec4 normal;
+in vec2 texCoord;
 
 out vec4  fColor;
 
 uniform int shadeMode;
 uniform mat4 mView;
+uniform int isTexture;
+uniform sampler2D horseTexture;
 
 void main() 
 { 
@@ -21,11 +24,21 @@ void main()
 
 	if (shadeMode == NO_LIGHT)
 	{
-		fColor = color;
+		if (isTexture == 1) {
+			fColor = texture( horseTexture, texCoord ).rgba;
+		} 
+		else {
+			fColor = color;
+		}
 	}
 	else if (shadeMode == GOURAUD)
 	{
-		fColor = color;
+		if (isTexture == 1) {
+			fColor = color * texture( horseTexture, texCoord ).rgba;
+		} 
+		else {
+			fColor = color;
+		}
 	}
 	else // if (shadeMode == PHONG)
 	{
@@ -43,6 +56,9 @@ void main()
 		float spec = ks * pow(clamp(dot(V, R), 0, 1), shininess);
 
 		fColor = ambient * Ia + diff * Id + spec * Is;
+		if (isTexture == 1) {
+			fColor = fColor * texture( horseTexture, texCoord ).rgba;
+		}
 	}
 } 
 
