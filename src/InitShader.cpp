@@ -1,6 +1,5 @@
 
-#include "cube.h"
-
+#include "initShader.h"
 
 
 // Create a NULL-terminated string by reading the provided file
