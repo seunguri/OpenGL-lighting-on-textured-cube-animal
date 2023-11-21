@@ -1,5 +1,9 @@
 # OpenGL-walking-animal
 Implement walking zebras with OpenGL  
+### LIGHT, TEXTURE
+![ezgif com-video-to-gif](https://github.com/seunguri/walking-animal-OpenGL-freeglut-glew/assets/52988414/60c7a142-9c8a-4d05-94f7-8d6d1c4fcd63)
+
+### CUBE MODEL
 ![ezgif com-video-to-gif (1)](https://github.com/seunguri/OpenGL-walking-animal/assets/52988414/5ef3043f-d78c-4208-836e-0d4c6c86b657)
 
 ## 1. walking leg: radian(theta) * sin(radian(t * speed))
