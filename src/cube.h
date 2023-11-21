@@ -9,25 +9,26 @@ using namespace std;
 
 const int NumVertices = 36; //(6 faces)(2 triangles/face)(3 vertices/triangle)
 
-extern void makeCube(vector<glm::vec4> *verts);
+extern void makeCube(glm::vec4 verts[]);
 
 class Cube {
 public:
-	vector<glm::vec4> verts;
-	vector<glm::vec4> normals;
+	glm::vec4 verts[NumVertices];
+	glm::vec4 normals[NumVertices];
 
 	Cube() {
 		makeUV();
 		computeNormals();
 	};
 	~Cube() {
-		verts.clear();
-		vector<glm::vec4>().swap(verts);
-		normals.clear();
-		vector<glm::vec4>().swap(normals);
+		for (int i = 0; i < NumVertices; i++) {
+			verts[i] = glm::vec4(0.0f);
+			normals[i] = glm::vec4(0.0f);
+		}
 	}
 private:
     const int NumVertices = 36;
 	void makeUV();
+    void quad(glm::vec4 vertices[], int a, int b, int c, int d);
 	void computeNormals();
 } ;
