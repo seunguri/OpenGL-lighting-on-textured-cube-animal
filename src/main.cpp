@@ -36,8 +36,8 @@ void init()
 	glGenBuffers(1, buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, buffer[0]);
 
-	int vertSize = sizeof(cube.verts[0])*sizeof(*cube.verts);
-	int normalSize = sizeof(cube.normals[0])*sizeof(*cube.normals);
+	int vertSize = sizeof(cube.verts);
+	int normalSize = sizeof(cube.normals);
 	glBufferData(GL_ARRAY_BUFFER, vertSize + normalSize,
 		NULL, GL_STATIC_DRAW);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, vertSize, cube.verts);
@@ -84,7 +84,7 @@ void display(void)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glUniformMatrix4fv(modelMatrixID, 1, GL_FALSE, &modelMat[0][0]);
-	glDrawArrays(GL_TRIANGLES, 0, sizeof(*cube.verts));
+	glDrawArrays(GL_TRIANGLES, 0, sizeof(cube.verts));
 
 // 	worldMat = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 0.0f));
 // 	drawHorse(worldMat);
@@ -102,7 +102,7 @@ void idle()
 	if (isRotate && abs(currTime - prevTime) >= 20)
 	{
 		float t = abs(currTime - prevTime);
-		float speed = 360.0f / 100000.0f;
+		float speed = 360.0f / 10000.0f;
 		modelMat = glm::rotate(modelMat, glm::radians(t*speed), glm::vec3(1.0f, 1.0f, 0.0f));
         // upperLegAngle = glm::radians(30.0f) * sin(glm::radians(currTime * 360.0f / 1000.0f));
 		// lowerLegAngle = glm::radians(30.0f) * sin(glm::radians(currTime * 360.0f / 990.0f));
@@ -122,7 +122,7 @@ void keyboard(unsigned char key, int x, int y)
 		glutPostRedisplay();
 		break;
 	case 'r': case 'R':
-		isRotate != isRotate;
+		isRotate = ~isRotate;
 		glutPostRedisplay();
 		break;
 	case 033:  // Escape key
