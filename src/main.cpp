@@ -26,7 +26,7 @@ GLuint textureModeID;
 Cube cube {};
 
 
-void drawHorse(glm::mat4 worldMat)
+void drawHorse()
 {
 	glm::mat4 horseMat;
 	glm::vec3 legpos[4];
@@ -42,20 +42,20 @@ void drawHorse(glm::mat4 worldMat)
 	earpos[0] = glm::vec3(-0.8, 0.5, 0.1); // left
 
 	// horse body
-	horseMat = glm::scale(worldMat, glm::vec3(1, 0.5, 0.4));
+	horseMat = glm::scale(modelMat, glm::vec3(1, 0.5, 0.4));
 	glUniformMatrix4fv(modelMatrixID, 1, GL_FALSE, &horseMat[0][0]);
 	//glDrawArrays(GL_TRIANGLES, 0, sizeof(cube.verts));
 	glDrawArrays(GL_TRIANGLES, 0, NumVertices);
 
 	// horse neck
-	horseMat = glm::translate(worldMat, glm::vec3(-0.6, 0.3, 0));
+	horseMat = glm::translate(modelMat, glm::vec3(-0.6, 0.3, 0));
 	horseMat = glm::rotate(horseMat, glm::radians(45.0f), glm::vec3(0, 0, 1.0f));
 	horseMat = glm::scale(horseMat, glm::vec3(0.3, 0.5, 0.3));
 	glUniformMatrix4fv(modelMatrixID, 1, GL_FALSE, &horseMat[0][0]);
 	glDrawArrays(GL_TRIANGLES, 0, NumVertices);
 
 	// horse head
-	horseMat = glm::translate(worldMat, glm::vec3(-0.77, 0.3, 0));
+	horseMat = glm::translate(modelMat, glm::vec3(-0.77, 0.3, 0));
 	horseMat = glm::rotate(horseMat, glm::radians(-45.0f), glm::vec3(0, 0, 1.0f));
 	horseMat = glm::scale(horseMat, glm::vec3(0.25, 0.45, 0.29));
 	glUniformMatrix4fv(modelMatrixID, 1, GL_FALSE, &horseMat[0][0]);
@@ -64,7 +64,7 @@ void drawHorse(glm::mat4 worldMat)
 	// horse ear
 	for (int i = 0; i < 2; i++)
 	{
-		horseMat = glm::translate(worldMat, earpos[i]);
+		horseMat = glm::translate(modelMat, earpos[i]);
 		horseMat = glm::scale(horseMat, glm::vec3(0.05, 0.2, 0.05));
 		//horseMat = glm::rotate(horseMat, glm::radians(15.0f), glm::vec3(1.0f, 0, 0));
 		glUniformMatrix4fv(modelMatrixID, 1, GL_FALSE, &horseMat[0][0]);
@@ -72,7 +72,7 @@ void drawHorse(glm::mat4 worldMat)
 	}
 
 	// horse tail
-	horseMat = glm::translate(worldMat, glm::vec3(0.6, 0, 0));  //p*v*c*t*s*v
+	horseMat = glm::translate(modelMat, glm::vec3(0.6, 0, 0));  //p*v*c*t*s*v
 	horseMat = glm::rotate(horseMat, glm::radians(30.0f), glm::vec3(0, 0, 1.0f));
 	horseMat = glm::scale(horseMat, glm::vec3(0.1, 0.5, 0.1));
 	glUniformMatrix4fv(modelMatrixID, 1, GL_FALSE, &horseMat[0][0]);
@@ -85,7 +85,7 @@ void drawHorse(glm::mat4 worldMat)
 		if (i % 2 != 0)
 			dir = -1.0f;
 		// upper
-		horseMat = glm::translate(worldMat, legpos[i] + glm::vec3(0, 0.2, 0));
+		horseMat = glm::translate(modelMat, legpos[i] + glm::vec3(0, 0.2, 0));
 		horseMat = glm::rotate(horseMat, dir * upperLegAngle, glm::vec3(0, 0, 1));
 		horseMat = glm::translate(horseMat, glm::vec3(0, -0.2, 0));
 		horseMat = glm::scale(horseMat, glm::vec3(0.15, 0.35, 0.15));
@@ -94,7 +94,7 @@ void drawHorse(glm::mat4 worldMat)
 		glDrawArrays(GL_TRIANGLES, 0, NumVertices);
 
 		// lower
-		horseMat = glm::translate(worldMat, legpos[i] + glm::vec3(0, 0.2, 0));
+		horseMat = glm::translate(modelMat, legpos[i] + glm::vec3(0, 0.2, 0));
 		horseMat = glm::rotate(horseMat, dir * upperLegAngle, glm::vec3(0, 0, 1));
 		horseMat = glm::translate(horseMat, lowerlegpos + glm::vec3(0, 0.05, 0));
 		horseMat = glm::rotate(horseMat, -dir * lowerLegAngle, glm::vec3(0, 0, 1));
@@ -181,7 +181,7 @@ void display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	drawHorse(modelMat);
+	drawHorse();
 
 	glutSwapBuffers();
 }
