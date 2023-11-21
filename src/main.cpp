@@ -36,12 +36,12 @@ void init()
 	glGenBuffers(1, buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, buffer[0]);
 
-	int vertSize = sizeof(cube.verts[0])*cube.verts.size();
-	int normalSize = sizeof(cube.normals[0])*cube.normals.size();
+	int vertSize = sizeof(cube.verts[0])*sizeof(*cube.verts);
+	int normalSize = sizeof(cube.normals[0])*sizeof(*cube.normals);
 	glBufferData(GL_ARRAY_BUFFER, vertSize + normalSize,
 		NULL, GL_STATIC_DRAW);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, vertSize, cube.verts.data());
-	glBufferSubData(GL_ARRAY_BUFFER, vertSize, normalSize, cube.normals.data());
+	glBufferSubData(GL_ARRAY_BUFFER, 0, vertSize, cube.verts);
+	glBufferSubData(GL_ARRAY_BUFFER, vertSize, normalSize, cube.normals);
 
 	// Load shaders and use the resulting shader program
 	GLuint program = InitShader("src/vshader.glsl", "src/fshader.glsl");
@@ -84,7 +84,7 @@ void display(void)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glUniformMatrix4fv(modelMatrixID, 1, GL_FALSE, &modelMat[0][0]);
-	glDrawArrays(GL_TRIANGLES, 0, cube.verts.size());
+	glDrawArrays(GL_TRIANGLES, 0, sizeof(*cube.verts));
 
 // 	worldMat = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 0.0f));
 // 	drawHorse(worldMat);
@@ -122,7 +122,7 @@ void keyboard(unsigned char key, int x, int y)
 		glutPostRedisplay();
 		break;
 	case 'r': case 'R':
-		isRotate = !isRotate;
+		isRotate != isRotate;
 		glutPostRedisplay();
 		break;
 	case 033:  // Escape key
@@ -153,7 +153,7 @@ int main(int argc, char **argv)
 	glutInitWindowSize(512, 512);
 	glutInitContextVersion(3, 2);
 	glutInitContextProfile(GLUT_CORE_PROFILE);
-	glutCreateWindow("Horse");
+	glutCreateWindow("Zebra");
 
 	glewInit();
 

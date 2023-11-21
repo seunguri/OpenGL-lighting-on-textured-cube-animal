@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="src\cube.cpp" />
     <ClCompile Include="src\InitShader.cpp" />
+    <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\fshader.glsl" />
@@ -20,6 +21,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\cube.h" />
+    <ClInclude Include="src\initShader.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D8FA1F1A-8261-4049-80EC-DC9678F99471}</ProjectGuid>
