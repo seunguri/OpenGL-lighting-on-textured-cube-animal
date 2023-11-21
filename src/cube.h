@@ -32,5 +32,5 @@ private:
 	void makeUV();
     void quad(glm::vec4 vertices[], int a, int b, int c, int d);
 	void computeNormals();
-	void computeTexCoordQuad(glm::vec2 texcoord[4], int u, int v, int u2, int v2);
+	void computeTexCoordQuad(glm::vec2 texcoord[4], int a, int b, int c, int d);
 } ;

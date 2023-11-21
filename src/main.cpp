@@ -3,6 +3,7 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtx/transform.hpp"
+#include "texture.hpp"
 
 enum eShadeMode { NO_LIGHT, GOURAUD, PHONG, NUM_LIGHT_MODE };
 
@@ -11,6 +12,7 @@ glm::mat4 viewMat;
 glm::mat4 modelMat = glm::mat4(1.0f);
 
 int shadeMode = NO_LIGHT;
+int isTexture = false;
 int isRotate = false;
 float upperLegAngle = 0.0f;
 float lowerLegAngle = 0.0f;
@@ -19,6 +21,7 @@ GLuint projectMatrixID;
 GLuint viewMatrixID;
 GLuint modelMatrixID;
 GLuint shadeModeID;
+GLuint textureModeID;
 
 Cube cube {};
 
@@ -117,10 +120,12 @@ void init()
 
 	int vertSize = sizeof(cube.verts);
 	int normalSize = sizeof(cube.normals);
-	glBufferData(GL_ARRAY_BUFFER, vertSize + normalSize,
+	int texSize = sizeof(cube.texCoords);
+	glBufferData(GL_ARRAY_BUFFER, vertSize + normalSize + texSize,
 		NULL, GL_STATIC_DRAW);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, vertSize, cube.verts);
 	glBufferSubData(GL_ARRAY_BUFFER, vertSize, normalSize, cube.normals);
+	glBufferSubData(GL_ARRAY_BUFFER, vertSize + normalSize, texSize, cube.texCoords);
 
 	// Load shaders and use the resulting shader program
 	GLuint program = InitShader("src/vshader.glsl", "src/fshader.glsl");
@@ -137,6 +142,11 @@ void init()
 	glVertexAttribPointer(vNormal, 4, GL_FLOAT, GL_FALSE, 0,
 		BUFFER_OFFSET(vertSize));
 
+	GLuint vTexCoord = glGetAttribLocation(program, "vTexCoord");
+	glEnableVertexAttribArray(vTexCoord);
+	glVertexAttribPointer(vTexCoord, 2, GL_FLOAT, GL_FALSE, 0,
+		BUFFER_OFFSET(vertSize + normalSize));
+
 	projectMatrixID = glGetUniformLocation(program, "mProject");
 	projectMat = glm::perspective(glm::radians(65.0f), 1.0f, 0.1f, 100.0f);
 	glUniformMatrix4fv(projectMatrixID, 1, GL_FALSE, &projectMat[0][0]);
@@ -151,6 +161,15 @@ void init()
 
 	shadeModeID = glGetUniformLocation(program, "shadeMode");
 	glUniform1i(shadeModeID, shadeMode);
+
+	textureModeID = glGetUniformLocation(program, "isTexture");
+	glUniform1i(textureModeID, isTexture);
+
+	GLuint Texture = loadBMP_custom("zebra_body.bmp");
+	GLuint TextureID = glGetUniformLocation(program, "horseTexture");
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, Texture);
+	glUniform1i(TextureID, 0);
 
 	glEnable(GL_DEPTH_TEST);
 	glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -184,6 +203,10 @@ void idle()
 		prevTime = currTime;
 		glutPostRedisplay();
 	}
+	else if (!isRotate)
+	{
+		prevTime = currTime;
+	}
 }
 
 //----------------------------------------------------------------------------
@@ -197,7 +220,12 @@ void keyboard(unsigned char key, int x, int y)
 		glutPostRedisplay();
 		break;
 	case 'r': case 'R':
-		isRotate = ~isRotate;
+		isRotate = !isRotate;
+		glutPostRedisplay();
+		break;
+	case 't': case 'T':
+		isTexture = !isTexture;
+		glUniform1i(textureModeID, isTexture);
 		glutPostRedisplay();
 		break;
 	case 033:  // Escape key
