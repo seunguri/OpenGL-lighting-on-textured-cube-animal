@@ -15,6 +15,7 @@ class Cube {
 public:
 	glm::vec4 verts[NumVertices];
 	glm::vec4 normals[NumVertices];
+	glm::vec2 texCoords[NumVertices];
 
 	Cube() {
 		makeUV();
@@ -31,4 +32,5 @@ private:
 	void makeUV();
     void quad(glm::vec4 vertices[], int a, int b, int c, int d);
 	void computeNormals();
+	void computeTexCoordQuad(glm::vec2 texcoord[4], int u, int v, int u2, int v2);
 } ;
