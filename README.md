@@ -1,10 +1,16 @@
 # OpenGL-walking-animal
 Implement walking zebras with OpenGL  
 ### LIGHT, TEXTURE
-![ezgif com-video-to-gif](https://github.com/seunguri/walking-animal-OpenGL-freeglut-glew/assets/52988414/60c7a142-9c8a-4d05-94f7-8d6d1c4fcd63)
+<img width="500" alt="zebra" src="https://github.com/seunguri/walking-animal-OpenGL-freeglut-glew/assets/52988414/60c7a142-9c8a-4d05-94f7-8d6d1c4fcd63">
+<img width="200" alt="zebra-texture" src="https://github.com/seunguri/OpenGL-lighting-on-textured-cube-animal/assets/52988414/2bda0c76-2fe2-4d86-96a6-eba03cbbc316">
+
+#### add Head, Neck Texture  
+<img width="500" alt="zebra 2023-10-18 오후 12 31 43" src="https://github.com/seunguri/OpenGL-lighting-on-textured-cube-animal/assets/52988414/0514d065-b742-4bd4-9f72-2fb132e4e59a">
+<img width="200" alt="zebra-texture" src="https://github.com/seunguri/OpenGL-lighting-on-textured-cube-animal/assets/52988414/65bceb45-9011-46e7-ab74-c622a3707327">
+
 
 ### CUBE MODEL
-![ezgif com-video-to-gif (1)](https://github.com/seunguri/OpenGL-walking-animal/assets/52988414/5ef3043f-d78c-4208-836e-0d4c6c86b657)
+![horse](https://github.com/seunguri/OpenGL-walking-animal/assets/52988414/5ef3043f-d78c-4208-836e-0d4c6c86b657)
 
 ## 1. walking leg: radian(theta) * sin(radian(t * speed))
 <img width="1550" alt="스크린샷 2023-10-18 오후 12 31 43" src="https://github.com/seunguri/OpenGL-walking-animal/assets/52988414/b4ea3a09-84b0-472d-9521-babd24dda815">
