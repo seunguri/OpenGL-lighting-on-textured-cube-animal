@@ -23,6 +23,9 @@ GLuint modelMatrixID;
 GLuint shadeModeID;
 GLuint textureModeID;
 
+GLuint FaceTexture;
+GLuint BodyTexture;
+
 Cube cube {};
 
 
@@ -48,6 +51,8 @@ void drawHorse()
 	glDrawArrays(GL_TRIANGLES, 0, NumVertices);
 
 	// horse neck
+	glBindTexture(GL_TEXTURE_2D, FaceTexture);
+
 	horseMat = glm::translate(modelMat, glm::vec3(-0.6, 0.3, 0));
 	horseMat = glm::rotate(horseMat, glm::radians(45.0f), glm::vec3(0, 0, 1.0f));
 	horseMat = glm::scale(horseMat, glm::vec3(0.3, 0.5, 0.3));
@@ -60,6 +65,9 @@ void drawHorse()
 	horseMat = glm::scale(horseMat, glm::vec3(0.25, 0.45, 0.29));
 	glUniformMatrix4fv(modelMatrixID, 1, GL_FALSE, &horseMat[0][0]);
 	glDrawArrays(GL_TRIANGLES, 0, NumVertices);
+
+
+	glBindTexture(GL_TEXTURE_2D, BodyTexture);
 
 	// horse ear
 	for (int i = 0; i < 2; i++)
@@ -165,11 +173,17 @@ void init()
 	textureModeID = glGetUniformLocation(program, "isTexture");
 	glUniform1i(textureModeID, isTexture);
 
-	GLuint Texture = loadBMP_custom("zebra_body.bmp");
-	GLuint TextureID = glGetUniformLocation(program, "horseTexture");
+	BodyTexture = loadBMP_custom("zebra_body.bmp");
+	GLuint BodyTextureID = glGetUniformLocation(program, "horseTexture");
+	glUniform1i(BodyTextureID, 0);
+	
+	FaceTexture = loadBMP_custom("zebra_brown.bmp");
+	GLuint FaceTextureID = glGetUniformLocation(program, "horseFaceTexture");
+	glUniform1i(FaceTextureID, 0);
+
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, Texture);
-	glUniform1i(TextureID, 0);
+	glBindTexture(GL_TEXTURE_2D, BodyTexture);
+
 
 	glEnable(GL_DEPTH_TEST);
 	glClearColor(0.0, 0.0, 0.0, 1.0);

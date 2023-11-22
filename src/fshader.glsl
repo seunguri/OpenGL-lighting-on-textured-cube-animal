@@ -13,6 +13,7 @@ uniform int shadeMode;
 uniform mat4 mView;
 uniform int isTexture;
 uniform sampler2D horseTexture;
+uniform sampler2D horseFaceTexture;
 
 void main() 
 { 
